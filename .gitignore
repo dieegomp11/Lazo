@@ -1,0 +1,16 @@
+# Carpetas de skills (solo para uso local de Claude Code)
+design-taste-frontend/
+full-output-enforcement/
+gpt-taste/
+high-end-visual-design/
+image-taste-frontend/
+industrial-brutalist-ui/
+minimalist-ui/
+redesign-existing-projects/
+stitch-design-taste/
+taste-skill/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini

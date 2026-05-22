@@ -1,0 +1,1634 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>José Carlos Lazo · Extremo · Albacete Balompié</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:      #F5F3EF;
+  --bg2:     #EDEAE4;
+  --ink:     #1A1A18;
+  --ink2:    #4A4A46;
+  --ink3:    #8C8B86;
+  --accent:  #D94F2C;
+  --accent2: #F0A500;
+  --white:   #FFFFFF;
+  --line:    rgba(26,26,24,0.1);
+  --ff-cond: 'Barlow Condensed', sans-serif;
+  --ff-body: 'Barlow', sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--ff-body);
+  font-size: 16px;
+  line-height: 1.65;
+  overflow-x: hidden;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0;
+  z-index: 200;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1rem 5vw;
+  background: transparent;
+  transition: background 0.3s;
+}
+nav.scrolled {
+  background: rgba(26,26,24,0.96);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.nav-brand {
+  font-family: var(--ff-cond);
+  font-weight: 700;
+  font-size: 1.4rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--white);
+  text-decoration: none;
+  position: relative; z-index: 201;
+}
+.nav-brand-accent { color: var(--accent); }
+.nav-links { display: flex; gap: 2rem; list-style: none; }
+.nav-links a {
+  font-family: var(--ff-cond);
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.42);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--white); }
+
+/* Hamburger */
+.nav-hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  cursor: pointer;
+  background: none; border: none;
+  padding: 6px;
+  position: relative; z-index: 201;
+}
+.nav-hamburger span {
+  display: block;
+  width: 22px; height: 1.5px;
+  background: rgba(255,255,255,0.8);
+  transition: transform 0.3s cubic-bezier(0.32,0.72,0,1), opacity 0.2s;
+  transform-origin: center;
+}
+.nav-hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(4px, 4.5px); }
+.nav-hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.nav-hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(4px, -4.5px); }
+
+/* Mobile overlay menu */
+.nav-overlay {
+  position: fixed; inset: 0;
+  z-index: 199;
+  background: rgba(26,26,24,0.98);
+  display: flex;
+  flex-direction: column;
+  align-items: center; justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.28s ease;
+}
+.nav-overlay.open { opacity: 1; pointer-events: auto; }
+.nav-overlay-links {
+  list-style: none;
+  display: flex; flex-direction: column;
+  align-items: center; gap: 0.15rem;
+}
+.nav-overlay-links li {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+.nav-overlay.open .nav-overlay-links li { opacity: 1; transform: translateY(0); }
+.nav-overlay.open .nav-overlay-links li:nth-child(1) { transition-delay: 0.06s; }
+.nav-overlay.open .nav-overlay-links li:nth-child(2) { transition-delay: 0.1s; }
+.nav-overlay.open .nav-overlay-links li:nth-child(3) { transition-delay: 0.14s; }
+.nav-overlay.open .nav-overlay-links li:nth-child(4) { transition-delay: 0.18s; }
+.nav-overlay.open .nav-overlay-links li:nth-child(5) { transition-delay: 0.22s; }
+.nav-overlay-links a {
+  font-family: var(--ff-cond);
+  font-size: 2.4rem; font-weight: 700;
+  letter-spacing: 0.06em; text-transform: uppercase;
+  color: rgba(255,255,255,0.5);
+  text-decoration: none;
+  display: block; padding: 0.5rem 2.5rem;
+  transition: color 0.2s;
+}
+.nav-overlay-links a:hover { color: var(--white); }
+.nav-overlay-brand {
+  position: absolute; bottom: 2rem; left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--ff-cond); font-weight: 700;
+  font-size: 0.95rem; letter-spacing: 0.14em; text-transform: uppercase;
+  color: rgba(255,255,255,0.1);
+}
+.nav-overlay-brand span { color: var(--accent); opacity: 0.3; }
+
+/* ── HERO ── */
+.hero {
+  position: relative;
+  min-height: 100dvh;   /* FIX: was 100vh — iOS Safari viewport bug */
+  background: var(--ink);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.hero-bg { position: absolute; inset: 0; z-index: 0; }
+.hero-bg-gradient {
+  position: absolute; inset: 0; z-index: 2;
+  background:
+    linear-gradient(to right, rgba(26,26,24,0.82) 18%, rgba(26,26,24,0.45) 50%, rgba(26,26,24,0.0) 100%),
+    linear-gradient(to top, rgba(26,26,24,0.75) 0%, transparent 22%);
+}
+.hero-bg-slot {
+  position: absolute; inset: 0; z-index: 1;
+  background: #111;
+  display: flex; align-items: center; justify-content: center;
+}
+.hero-bg-slot svg { opacity: 0.04; }
+.hero-bg-slot p {
+  position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+  font-family: var(--ff-cond); font-size: 0.6rem; font-weight: 700;
+  letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.07);
+  white-space: nowrap;
+}
+.hero-bg-img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
+.hero-ghost {
+  position: absolute;
+  bottom: -0.22em; left: -0.04em;
+  z-index: 3;
+  font-family: var(--ff-cond); font-weight: 700;
+  font-size: clamp(22rem, 42vw, 58rem);
+  line-height: 1; letter-spacing: -0.05em; text-transform: uppercase;
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgba(217,79,44,0.06);
+  user-select: none; pointer-events: none; white-space: nowrap;
+}
+
+/* ── HERO SPLIT ── */
+.hero-split {
+  position: relative; z-index: 10;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  flex: 1;
+  align-items: stretch;
+}
+
+/* ── LEFT SIDE ── */
+.hero-content-side {
+  display: flex; flex-direction: column; justify-content: flex-end;
+  padding: 0 5vw 4.5rem; padding-top: 7rem;
+}
+
+.hero-eyebrow {
+  display: flex; align-items: center; gap: 0.75rem;
+  opacity: 0; animation: up 0.45s 0.1s ease forwards; margin-bottom: 1.2rem;
+}
+.hero-eyebrow-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+.hero-eyebrow span {
+  font-family: var(--ff-cond); font-size: 0.75rem; font-weight: 700;
+  letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.38);
+}
+.hero-eyebrow span b { color: var(--accent); font-weight: 700; }
+.hero-lazo {
+  font-family: var(--ff-cond); font-weight: 700;
+  font-size: clamp(4.5rem, 12vw, 14rem);
+  line-height: 0.86; letter-spacing: -0.03em; text-transform: uppercase;
+  color: var(--white);
+  opacity: 0; animation: up 0.65s 0.25s ease forwards;
+}
+.lazo-z { color: var(--accent); }
+.hero-lazo-underline {
+  display: block; width: 100%; max-width: 560px; height: 3px;
+  background: linear-gradient(to right, var(--accent) 0%, rgba(217,79,44,0) 100%);
+  margin-top: 0.35rem;
+  opacity: 0; animation: wipe 0.5s 0.8s ease forwards; transform-origin: left;
+}
+.hero-nombre {
+  margin-top: 1.2rem;
+  font-family: var(--ff-cond); font-weight: 400; font-style: italic;
+  font-size: clamp(0.95rem, 2.2vw, 1.3rem); letter-spacing: 0.2em; text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+  opacity: 0; animation: up 0.45s 0.9s ease forwards;
+}
+.hero-sep {
+  margin: 1.8rem 0; display: flex; align-items: center; gap: 1.2rem;
+  opacity: 0; animation: up 0.45s 1.05s ease forwards;
+}
+.hero-sep-line { width: 36px; height: 1px; background: rgba(255,255,255,0.15); }
+.hero-sep-tag {
+  font-family: var(--ff-cond); font-size: 0.68rem; font-weight: 700;
+  letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.2);
+}
+.hero-stats {
+  display: flex; gap: 0; flex-wrap: wrap;
+  opacity: 0; animation: up 0.45s 1.15s ease forwards;
+}
+.hero-stat {
+  display: flex; flex-direction: column;
+  padding-right: 1.8rem; margin-right: 1.8rem;
+  border-right: 1px solid rgba(255,255,255,0.1);
+}
+.hero-stat:last-child { border-right: none; padding-right: 0; margin-right: 0; }
+.hero-stat-val {
+  font-family: var(--ff-cond); font-weight: 700;
+  font-size: clamp(1.5rem, 2.8vw, 2.2rem); line-height: 1; color: var(--white);
+}
+.hero-stat-val.accent { color: var(--accent2); }
+.hero-stat-lbl {
+  font-size: 0.66rem; font-weight: 400; letter-spacing: 0.16em; text-transform: uppercase;
+  color: rgba(255,255,255,0.25); margin-top: 0.2rem;
+}
+.hero-ctas {
+  display: flex; gap: 0.8rem; margin-top: 2rem; flex-wrap: wrap;
+  opacity: 0; animation: up 0.45s 1.3s ease forwards;
+}
+
+/* ── PRÓXIMO PARTIDO ── */
+.hero-next-match {
+  margin-top: 2rem;
+  opacity: 0; animation: up 0.45s 0.9s ease forwards;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding-top: 1.4rem;
+  max-width: 340px;
+}
+.hero-next-label {
+  display: block;
+  font-family: var(--ff-cond); font-size: 0.6rem; font-weight: 700;
+  letter-spacing: 0.26em; text-transform: uppercase;
+  color: rgba(255,255,255,0.28); margin-bottom: 1rem;
+}
+.hero-next-row {
+  display: flex; align-items: center; gap: 1.2rem;
+}
+.hero-next-team {
+  display: flex; flex-direction: column; align-items: center; gap: 0.45rem;
+}
+.hero-next-crest {
+  width: 44px; height: 44px;
+  object-fit: contain; object-position: center;
+  display: block;
+}
+.hero-next-crest-ph {
+  width: 44px; height: 44px;
+  display: none;
+}
+.hero-next-tname {
+  font-family: var(--ff-cond); font-size: 0.62rem; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: rgba(255,255,255,0.35);
+}
+.hero-next-meta {
+  flex: 1;
+  display: flex; flex-direction: column; align-items: center; gap: 0.15rem;
+}
+.hero-next-jornada {
+  font-family: var(--ff-cond); font-size: 0.58rem; font-weight: 700;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  color: rgba(255,255,255,0.2);
+}
+.hero-next-time {
+  font-family: var(--ff-cond); font-size: 1.5rem; font-weight: 700;
+  color: rgba(255,255,255,0.75); letter-spacing: 0.04em; line-height: 1;
+}
+.hero-next-vs {
+  font-family: var(--ff-cond); font-size: 0.55rem; font-weight: 700;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: rgba(255,255,255,0.18);
+}
+
+/* Clubs bar */
+.hero-clubs {
+  display: flex; align-items: center; gap: 1.5rem; margin-top: 2rem;
+  flex-wrap: wrap;
+  opacity: 0; animation: up 0.45s 1.5s ease forwards;
+}
+.hero-clubs-label {
+  font-family: var(--ff-cond); font-size: 0.6rem; font-weight: 700;
+  letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.18);
+  flex-shrink: 0;
+}
+.hero-clubs-list { display: flex; gap: 1rem; flex-wrap: wrap; }
+.hero-clubs-list span {
+  font-family: var(--ff-cond); font-size: 0.7rem; font-weight: 600;
+  letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.24);
+  padding-bottom: 1px; border-bottom: 1px solid rgba(255,255,255,0.08);
+  transition: color 0.2s;
+}
+.hero-clubs-list span:hover { color: rgba(255,255,255,0.5); }
+
+/* ── RIGHT SIDE: celebrating player ── */
+.hero-right-side {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Parallax wrapper — extra height on top/bottom absorbs movement */
+.hero-right-parallax {
+  position: absolute;
+  top: -18%; left: 0; right: 0; bottom: -18%;
+  will-change: transform;
+}
+
+/* Swap this slot for <img class="hero-right-img"> when photo is ready */
+.hero-right-img {
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center top;
+  display: block;
+}
+
+.hero-right-slot {
+  width: 100%; height: 100%;
+  background: #0d0c0b;
+  display: flex; align-items: center; justify-content: center;
+  position: relative; overflow: hidden;
+}
+
+/* Warm radial glow */
+.hero-right-slot::before {
+  content: '';
+  position: absolute;
+  width: 480px; height: 480px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(217,79,44,0.14) 0%, transparent 68%);
+  top: 48%; left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+/* Pulsing rings */
+.celebrate-ring {
+  position: absolute;
+  border-radius: 50%;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+.celebrate-ring.r1 {
+  width: 200px; height: 200px;
+  border: 1px solid rgba(217,79,44,0.22);
+  animation: ring-breathe 3.2s ease-in-out infinite;
+}
+.celebrate-ring.r2 {
+  width: 360px; height: 360px;
+  border: 1px solid rgba(217,79,44,0.1);
+  animation: ring-breathe 3.2s ease-in-out infinite;
+  animation-delay: 0.8s;
+}
+.celebrate-ring.r3 {
+  width: 520px; height: 520px;
+  border: 1px solid rgba(217,79,44,0.05);
+  animation: ring-breathe 3.2s ease-in-out infinite;
+  animation-delay: 1.6s;
+}
+@keyframes ring-breathe {
+  0%, 100% { opacity: 0.4; transform: translate(-50%, -50%) scale(0.95); }
+  50% { opacity: 1; transform: translate(-50%, -50%) scale(1.05); }
+}
+
+/* Large year watermark */
+.celebrate-bg-year {
+  position: absolute;
+  font-family: var(--ff-cond); font-weight: 700;
+  font-size: clamp(6rem, 14vw, 18rem);
+  letter-spacing: -0.06em;
+  color: rgba(217,79,44,0.05);
+  line-height: 1;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -44%);
+  white-space: nowrap;
+  pointer-events: none; user-select: none;
+}
+
+/* Confetti dots */
+.c-dot {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: c-rise linear infinite;
+}
+@keyframes c-rise {
+  0%   { transform: translateY(0) rotate(0deg) scale(0.7); opacity: 0; }
+  8%   { opacity: 0.9; }
+  88%  { opacity: 0.6; }
+  100% { transform: translateY(-72px) rotate(200deg) scale(1.1); opacity: 0; }
+}
+
+/* Celebration badge */
+.celebrate-content {
+  position: relative; z-index: 2;
+  display: flex; flex-direction: column;
+  align-items: center; gap: 0.25rem;
+  text-align: center;
+}
+.celebrate-star {
+  font-size: 1.7rem; line-height: 1;
+  color: var(--accent2);
+  animation: star-pulse 2.6s ease-in-out infinite;
+}
+@keyframes star-pulse {
+  0%, 100% { transform: scale(1) translateY(0); filter: brightness(1); }
+  50% { transform: scale(1.2) translateY(-3px); filter: brightness(1.35); }
+}
+.celebrate-word {
+  font-family: var(--ff-cond); font-weight: 700;
+  font-size: clamp(2rem, 4.5vw, 3.6rem);
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--white); line-height: 1;
+}
+.celebrate-divider {
+  width: 36px; height: 2px;
+  background: var(--accent);
+  margin: 0.4rem auto;
+}
+.celebrate-club {
+  font-family: var(--ff-cond); font-size: 0.8rem; font-weight: 600;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: rgba(255,255,255,0.35);
+}
+.celebrate-season {
+  font-family: var(--ff-cond); font-size: 0.64rem; font-weight: 600;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: rgba(255,255,255,0.17);
+  margin-top: 0.1rem;
+}
+.celebrate-hint {
+  position: absolute; bottom: 1.8rem; left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--ff-cond); font-size: 0.58rem; font-weight: 700;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  color: rgba(255,255,255,0.09);
+  white-space: nowrap; z-index: 5;
+}
+
+/* Edge blends */
+.hero-right-fade {
+  position: absolute; top: 0; left: 0; bottom: 0; width: 28%;
+  background: linear-gradient(to right, var(--ink) 0%, transparent 100%);
+  z-index: 3; pointer-events: none;
+}
+.hero-right-bottom-fade {
+  position: absolute; bottom: 0; left: 0; right: 0; height: 22%;
+  background: linear-gradient(to top, var(--ink) 0%, transparent 100%);
+  z-index: 3; pointer-events: none;
+}
+.hero-right-top-fade {
+  position: absolute; top: 0; left: 0; right: 0; height: 22%;
+  background: linear-gradient(to bottom, var(--ink) 0%, transparent 100%);
+  z-index: 3; pointer-events: none;
+  display: none;
+}
+
+/* Right vertical accent */
+.hero-right-accent-bar {
+  position: absolute; top: 18%; right: 0; bottom: 18%;
+  width: 2px;
+  background: linear-gradient(to bottom, transparent 0%, rgba(217,79,44,0.28) 40%, rgba(217,79,44,0.28) 60%, transparent 100%);
+  z-index: 5;
+}
+
+/* Player cutout — PNG con fondo transparente superpuesto al hero */
+.hero-player-cutout {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 52%;
+  height: 97dvh;
+  object-fit: contain;
+  object-position: bottom right;
+  z-index: 9;
+  pointer-events: none;
+  user-select: none;
+  opacity: 0.92;
+  filter: drop-shadow(-16px 0 40px rgba(0,0,0,0.5)) brightness(0.82);
+}
+
+/* Dorsal inside right panel */
+.hero-right-dorsal {
+  position: absolute; top: 5.5rem; right: 2.5rem;
+  z-index: 5; text-align: right;
+  opacity: 0; animation: fadeIn 0.7s 1.5s ease forwards;
+}
+.hero-right-dorsal .dnum {
+  font-family: var(--ff-cond); font-weight: 700;
+  font-size: clamp(4rem, 7vw, 8rem); line-height: 1;
+  color: rgba(255,255,255,0.05); letter-spacing: -0.06em;
+}
+.hero-right-dorsal .dlbl {
+  font-family: var(--ff-cond); font-size: 0.58rem; font-weight: 700;
+  letter-spacing: 0.24em; text-transform: uppercase; color: rgba(255,255,255,0.1);
+}
+
+.hero-accent-strip { position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: var(--accent); z-index: 11; }
+
+@keyframes wipe   { from { opacity:0; transform: scaleX(0); } to { opacity:1; transform: scaleX(1); } }
+@keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+
+/* ── BUTTONS ── */
+.btn {
+  display: inline-block;
+  padding: 0.7rem 1.8rem;
+  font-family: var(--ff-cond);
+  font-size: 0.85rem; font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  text-decoration: none; border-radius: 2px;
+  transition: all 0.2s; cursor: pointer; border: none;
+}
+.btn-solid { background: var(--accent); color: #fff; }
+.btn-solid:hover { background: #bf4222; transform: translateY(-1px); }
+.btn-solid:active { transform: translateY(0) scale(0.98); }
+.btn-ghost { background: transparent; color: var(--white); border: 1.5px solid rgba(255,255,255,0.2); }
+.btn-ghost:hover { border-color: rgba(255,255,255,0.5); }
+
+/* ── SECTION BASE ── */
+section { padding: 5rem 5vw; }
+.section-header { margin-bottom: 3rem; }
+.tag {
+  display: inline-block;
+  font-family: var(--ff-cond); font-size: 0.72rem; font-weight: 700;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--accent); border-bottom: 2px solid var(--accent);
+  padding-bottom: 0.1rem; margin-bottom: 0.75rem;
+}
+.sec-title {
+  font-family: var(--ff-cond); font-weight: 700;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  line-height: 1.05; text-transform: uppercase; letter-spacing: 0.02em;
+}
+.sec-sub {
+  margin-top: 0.6rem; font-size: 0.95rem; font-weight: 300;
+  color: var(--ink2); max-width: 540px;
+}
+
+/* ── SOBRE MÍ ── */
+.about { background: var(--white); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5vw; max-width: 1100px; margin-left: auto; margin-right: auto; }
+.about-body { font-size: 1rem; font-weight: 300; color: var(--ink2); line-height: 1.85; }
+.about-body p { margin-bottom: 1rem; }
+.about-body strong { color: var(--ink); font-weight: 500; }
+.data-row {
+  display: flex; border-bottom: 1px solid var(--line);
+  padding: 0.9rem 0; align-items: center; justify-content: space-between;
+}
+.data-row:first-child { border-top: 1px solid var(--line); }
+.data-key {
+  font-family: var(--ff-cond); font-size: 0.78rem; font-weight: 600;
+  letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink3);
+}
+.data-val {
+  font-family: var(--ff-cond); font-size: 1.05rem; font-weight: 700;
+  color: var(--ink); text-align: right;
+}
+
+/* ── PHOTO BLOCK ── */
+.photo-hero { background: var(--bg2); border-top: 1px solid var(--line); padding: 0; position: relative; overflow: hidden; }
+.photo-hero-inner { display: grid; grid-template-columns: 2fr 1fr; min-height: 520px; max-width: 1400px; margin-left: auto; margin-right: auto; }
+.photo-main {
+  background: var(--bg2); border-right: 1px solid var(--line);
+  display: flex; align-items: center; justify-content: center;
+  position: relative; overflow: hidden;
+}
+.photo-slot {
+  width: 100%; height: 100%; min-height: 420px;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 1.2rem; color: var(--ink3); position: relative;
+}
+.photo-slot-icon { opacity: 0.2; }
+.photo-slot-label {
+  font-family: var(--ff-cond); font-size: 0.75rem; font-weight: 700;
+  letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.4;
+}
+.photo-slot-hint { font-size: 0.8rem; font-weight: 300; opacity: 0.35; text-align: center; max-width: 220px; line-height: 1.5; }
+.photo-side { display: flex; flex-direction: column; }
+.photo-side-top { flex: 1; border-bottom: 1px solid var(--line); display: flex; align-items: center; justify-content: center; min-height: 260px; }
+.photo-side-bottom {
+  flex: 1; display: flex; align-items: center; justify-content: center;
+  background: var(--ink); position: relative; overflow: hidden; min-height: 260px;
+}
+.photo-side-bottom .photo-slot { color: rgba(255,255,255,0.4); }
+.photo-side-bottom .photo-slot-icon { filter: invert(1); }
+.photo-accent-bar { position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--accent); }
+
+/* ── STATS ── */
+.stats-section { background: var(--ink); color: var(--bg); }
+.stats-section .tag { color: var(--accent); border-color: var(--accent); }
+.stats-section .sec-title { color: var(--white); }
+.stats-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 1px; background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.08); margin: 2.5rem auto 0; max-width: 1100px;
+}
+.stat-box { background: var(--ink); padding: 2.5rem 2rem; display: flex; flex-direction: column; transition: background 0.2s; }
+.stat-box:hover { background: #252520; }
+.stat-num {
+  font-family: var(--ff-cond); font-weight: 700;
+  font-size: clamp(2.8rem, 5vw, 4.5rem); line-height: 1;
+  color: var(--accent2); letter-spacing: -0.02em;
+}
+.stat-label { margin-top: 0.5rem; font-family: var(--ff-cond); font-size: 0.8rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.45); }
+.stat-note { margin-top: 0.25rem; font-size: 0.78rem; font-weight: 300; color: rgba(255,255,255,0.25); }
+
+/* ── ESTILO DE JUEGO ── */
+.skills { background: var(--bg); border-top: 1px solid var(--line); }
+.skills-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border: 1px solid var(--line); margin: 2.5rem auto 0; max-width: 1100px; }
+.skill-item { padding: 2rem 1.8rem; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); transition: background 0.2s; }
+.skill-item:hover { background: var(--white); }
+.skill-item:nth-child(3n) { border-right: none; }
+.skill-item:nth-last-child(-n+3) { border-bottom: none; }
+.skill-num { font-family: var(--ff-cond); font-weight: 700; font-size: 2.5rem; color: rgba(26,26,24,0.08); line-height: 1; margin-bottom: 0.6rem; }
+.skill-title { font-family: var(--ff-cond); font-weight: 700; font-size: 1.15rem; letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink); margin-bottom: 0.5rem; }
+.skill-title span { color: var(--accent); }
+.skill-body { font-size: 0.88rem; font-weight: 300; color: var(--ink2); line-height: 1.7; }
+
+/* ── GALERÍA ── */
+.gallery { background: var(--white); border-top: 1px solid var(--line); padding-bottom: 0; }
+.gallery-note { font-size: 0.82rem; color: var(--ink3); font-weight: 300; margin-top: 0.4rem; }
+.gallery-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1px; background: var(--line); margin: 2.5rem auto 0; border-top: 1px solid var(--line); max-width: 1100px;
+}
+.gallery-cell {
+  background: var(--bg2); aspect-ratio: 4/3;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 0.8rem; color: var(--ink3); position: relative;
+  overflow: hidden; transition: background 0.2s; cursor: pointer;
+}
+.gallery-cell:hover { background: var(--bg); }
+.gallery-cell:hover .gallery-overlay { opacity: 1; }
+.gallery-overlay { position: absolute; inset: 0; background: rgba(217,79,44,0.06); border: 2px solid var(--accent); opacity: 0; transition: opacity 0.2s; pointer-events: none; }
+.gallery-cell-icon { opacity: 0.18; }
+.gallery-cell-lbl { font-family: var(--ff-cond); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; opacity: 0.35; }
+.gallery-cell-num { position: absolute; bottom: 0.8rem; right: 1rem; font-family: var(--ff-cond); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; color: var(--ink3); opacity: 0.3; }
+.gallery-cell.is-video { background: #111; }
+.gallery-cell.is-video .gallery-cell-icon { filter: invert(1); opacity: 0.15; }
+.gallery-cell.is-video .gallery-cell-lbl { color: rgba(255,255,255,0.3); }
+.gallery-cell.is-video .gallery-cell-num { color: rgba(255,255,255,0.2); }
+.play-btn { width: 44px; height: 44px; border-radius: 50%; border: 1.5px solid rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; opacity: 0.25; }
+.play-btn svg { fill: white; }
+/* Imagen real dentro de gallery-cell */
+.gallery-cell img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center;
+  display: block;
+  transition: transform 0.4s cubic-bezier(0.32,0.72,0,1);
+}
+.gallery-cell:hover img { transform: scale(1.04); }
+
+/* ── TRAYECTORIA ── */
+.trayectoria { background: var(--bg); border-top: 1px solid var(--line); }
+.tl-table { margin: 2.5rem auto 0; max-width: 800px; }
+.tl-row {
+  display: grid; grid-template-columns: 90px 1fr auto;
+  gap: 1.5rem; align-items: start;
+  padding: 1.5rem 0; border-bottom: 1px solid var(--line);
+  opacity: 0; transform: translateX(-12px);
+  transition: opacity 0.45s, transform 0.45s;
+}
+.tl-row.visible { opacity: 1; transform: translateX(0); }
+.tl-row:first-child { border-top: 1px solid var(--line); }
+.tl-years { font-family: var(--ff-cond); font-size: 0.8rem; font-weight: 600; letter-spacing: 0.08em; color: var(--ink3); padding-top: 0.15rem; }
+.tl-club { font-family: var(--ff-cond); font-weight: 700; font-size: 1.1rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--ink); margin-bottom: 0.2rem; }
+.tl-cat { font-size: 0.78rem; font-weight: 300; color: var(--ink3); margin-bottom: 0.5rem; }
+.tl-highlight { font-size: 0.85rem; font-weight: 400; color: var(--ink2); }
+.tl-highlight strong { color: var(--accent); font-weight: 500; }
+.tl-badge { font-family: var(--ff-cond); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.25rem 0.7rem; border-radius: 2px; white-space: nowrap; align-self: start; }
+.badge-red { background: rgba(217,79,44,0.1); color: var(--accent); border: 1px solid rgba(217,79,44,0.2); }
+.badge-gray { background: rgba(26,26,24,0.05); color: var(--ink3); border: 1px solid var(--line); }
+
+/* ── VIDEO SECTION (TikTok 9:16 · scroll horizontal) ── */
+.video-section { background: var(--ink); border-top: 1px solid rgba(255,255,255,0.06); padding: 5rem 5vw; }
+.video-section .tag { color: var(--accent2); border-color: var(--accent2); }
+.video-section .sec-title { color: var(--white); }
+.video-section .sec-sub { color: rgba(255,255,255,0.4); }
+
+/* Scroll rail */
+.video-scroll-wrap {
+  position: relative;
+  margin: 2.5rem auto 0;
+  max-width: 1100px;
+}
+.video-grid {
+  display: flex;
+  overflow-x: auto;
+  gap: 1px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.06);
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  cursor: grab;
+}
+.video-grid::-webkit-scrollbar { display: none; }
+.video-grid.dragging { cursor: grabbing; user-select: none; }
+
+/* Each card = 25% of container → 4 visible → 5th peeks to signal scroll */
+.video-slot {
+  flex: 0 0 25%;
+  min-width: 140px;
+  aspect-ratio: 9/16;
+  scroll-snap-align: start;
+  background: #0d0d0d;
+  position: relative; overflow: hidden;
+  cursor: pointer;
+}
+.video-player {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.video-ui-overlay {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column; justify-content: space-between;
+  padding: 0.85rem;
+  background: linear-gradient(
+    to bottom,
+    rgba(0,0,0,0.55) 0%,
+    transparent 30%,
+    transparent 62%,
+    rgba(0,0,0,0.78) 100%
+  );
+  transition: background 0.3s;
+  pointer-events: none;
+}
+.video-slot.playing .video-ui-overlay {
+  background: linear-gradient(
+    to bottom,
+    rgba(0,0,0,0.22) 0%,
+    transparent 25%,
+    transparent 70%,
+    rgba(0,0,0,0.55) 100%
+  );
+}
+.video-ui-top { display: flex; justify-content: space-between; align-items: flex-start; }
+.video-ui-bottom { display: flex; flex-direction: column; gap: 0.2rem; }
+
+/* Play/pause — centred */
+.video-slot-play {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 48px; height: 48px; border-radius: 50%;
+  border: 1.5px solid rgba(255,255,255,0.5);
+  background: rgba(0,0,0,0.3);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  display: flex; align-items: center; justify-content: center;
+  transition: border-color 0.2s, transform 0.25s cubic-bezier(0.32,0.72,0,1), opacity 0.25s;
+  opacity: 1;
+}
+.video-slot:hover .video-slot-play {
+  border-color: var(--accent);
+  transform: translate(-50%, -50%) scale(1.12);
+}
+.video-slot-play svg { fill: rgba(255,255,255,0.9); transition: fill 0.2s; }
+.video-slot:hover .video-slot-play svg { fill: var(--accent); }
+.video-slot.playing .video-slot-play { opacity: 0; }
+.video-slot.playing:hover .video-slot-play { opacity: 1; }
+.video-pause-icon { display: none; }
+.video-slot.playing .video-play-icon { display: none; }
+.video-slot.playing .video-pause-icon { display: block; }
+
+/* TikTok badge */
+.video-tiktok-badge {
+  font-family: var(--ff-cond); font-size: 0.55rem; font-weight: 700;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  color: rgba(255,255,255,0.2);
+  border: 1px solid rgba(255,255,255,0.1);
+  padding: 0.18rem 0.45rem; border-radius: 2px;
+}
+.video-goal-num {
+  font-family: var(--ff-cond); font-size: 0.6rem; font-weight: 700;
+  letter-spacing: 0.1em; color: rgba(255,255,255,0.28);
+}
+.video-slot-lbl {
+  font-family: var(--ff-cond); font-size: 0.7rem; font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: rgba(255,255,255,0.88); line-height: 1.45;
+}
+.video-slot-meta {
+  font-family: var(--ff-cond); font-size: 0.6rem; font-weight: 400;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: rgba(255,255,255,0.38);
+}
+.video-duration {
+  font-family: var(--ff-cond); font-size: 0.6rem; font-weight: 700;
+  letter-spacing: 0.06em; color: rgba(255,255,255,0.28);
+}
+/* Scroll hint */
+.video-scroll-hint {
+  margin-top: 1rem;
+  font-family: var(--ff-cond); font-size: 0.65rem; font-weight: 700;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: rgba(255,255,255,0.18);
+  display: flex; align-items: center; gap: 0.6rem;
+}
+.video-scroll-hint::after {
+  content: '';
+  display: block; width: 28px; height: 1px;
+  background: rgba(255,255,255,0.15);
+}
+
+/* ── CONTACTO ── */
+.contacto { background: var(--white); border-top: 1px solid var(--line); }
+.contacto-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5vw; align-items: start; max-width: 900px; margin-left: auto; margin-right: auto; }
+.contacto-intro { font-size: 0.95rem; font-weight: 300; color: var(--ink2); line-height: 1.8; margin-top: 1rem; }
+.contacto-detail { margin-top: 2rem; display: flex; flex-direction: column; gap: 0.8rem; }
+.contacto-detail a, .contacto-detail span {
+  font-family: var(--ff-cond); font-size: 0.85rem; font-weight: 600;
+  letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink3);
+  text-decoration: none; transition: color 0.2s;
+}
+.contacto-detail a:hover { color: var(--accent); }
+.form-field { margin-bottom: 1rem; }
+.form-field label { display: block; font-family: var(--ff-cond); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ink3); margin-bottom: 0.4rem; }
+.form-field input, .form-field textarea { width: 100%; background: var(--bg); border: 1px solid var(--line); border-radius: 2px; padding: 0.75rem 0.9rem; font-family: var(--ff-body); font-size: 0.9rem; color: var(--ink); outline: none; transition: border-color 0.2s; }
+.form-field input:focus, .form-field textarea:focus { border-color: var(--accent); }
+.form-field textarea { height: 110px; resize: vertical; }
+.form-row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+
+/* ── FOOTER ── */
+footer {
+  background: var(--ink); padding: 2.5rem 5vw;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 1rem; border-top: 2px solid var(--accent);
+}
+.footer-brand { font-family: var(--ff-cond); font-weight: 700; font-size: 1.2rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.9); }
+.footer-brand span { color: var(--accent); }
+.footer-copy { font-size: 0.75rem; color: rgba(255,255,255,0.3); font-weight: 300; }
+.footer-links { display: flex; gap: 1.5rem; }
+.footer-links a { font-family: var(--ff-cond); font-size: 0.75rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.3); text-decoration: none; transition: color 0.2s; }
+.footer-links a:hover { color: var(--accent); }
+
+/* ── ANIMACIONES ── */
+@keyframes up {
+  from { opacity:0; transform: translateY(16px); }
+  to   { opacity:1; transform: translateY(0); }
+}
+
+/* ── ALINEACIÓN HEADERS CON CONTENIDO ── */
+.stats-section .section-header,
+.skills .section-header,
+.gallery .section-header,
+.trayectoria .section-header,
+.video-section .section-header { max-width: 1100px; margin-left: auto; margin-right: auto; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .hero-split { grid-template-columns: 1fr; }
+  .hero-right-side { min-height: 44vh; order: -1; }
+  .hero-content-side { padding: 2rem 5vw 4rem; }
+  .hero-right-dorsal { display: none; }
+  .hero-right-fade { display: none; }
+  .hero-right-top-fade { display: block; }
+  .hero-lazo { font-size: clamp(4rem, 18vw, 8rem); }
+  .hero-ghost { font-size: clamp(14rem, 45vw, 28rem); }
+  .about-grid, .contacto-grid { grid-template-columns: 1fr; }
+  .about-spacer { display: none; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .skills-grid { grid-template-columns: 1fr 1fr; }
+  .photo-hero-inner { grid-template-columns: 1fr; }
+  .photo-main { border-right: none; border-bottom: 1px solid var(--line); }
+  .gallery-grid { grid-template-columns: 1fr 1fr; }
+  .video-slot { flex: 0 0 33.333%; }
+  .tl-row { grid-template-columns: 70px 1fr; }
+  .tl-badge { display: none; }
+}
+
+@media (max-width: 768px) {
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .hero-next-match { max-width: 100%; }
+  .stat-box { padding: 2rem 1.5rem; }
+  .skill-item { padding: 1.6rem 1.4rem; }
+}
+
+@media (max-width: 580px) {
+  nav { padding: 0.8rem 4vw; }
+  .nav-links { display: none; }
+  .nav-hamburger { display: flex; }
+  section { padding: 3.5rem 5vw; }
+
+  /* ── HERO MOBILE ── */
+
+  /* Top section: espacio para que el jugador respire */
+  .hero-right-side { min-height: 46dvh; }
+
+  /* Gradiente: claro arriba (jugador visible), oscuro abajo (texto legible) */
+  .hero-bg-gradient {
+    background: linear-gradient(
+      to bottom,
+      rgba(26,26,24,0.38) 0%,
+      rgba(26,26,24,0.0) 24%,
+      rgba(26,26,24,0.42) 50%,
+      rgba(26,26,24,0.97) 64%
+    );
+  }
+
+  /* Jugador: reposicionado en la parte alta, opaco y centrado */
+  .hero-player-cutout {
+    bottom: auto;
+    top: 2.2rem;
+    right: 50%;
+    transform: translateX(50%);
+    width: 74%;
+    height: 49dvh;
+    opacity: 0.9;
+    z-index: 8;
+    object-position: top center;
+    filter: drop-shadow(-6px 6px 22px rgba(0,0,0,0.75)) brightness(0.9);
+  }
+
+  /* Contenido: padding compacto */
+  .hero-content-side { padding: 1.1rem 5vw 2.8rem; }
+
+  /* Título: más grande en móvil (18vw del breakpoint 900px queda corto en 360-580px) */
+  .hero-lazo { font-size: clamp(4.5rem, 23vw, 7rem); }
+
+  /* Nombre: más visible en móvil */
+  .hero-nombre { font-size: 0.95rem; letter-spacing: 0.15em; margin-top: 0.7rem; }
+
+  /* Próximo partido: compacto */
+  .hero-next-match { max-width: 100%; margin-top: 1.1rem; padding-top: 0.9rem; }
+  .hero-next-time { font-size: 1.25rem; }
+
+  /* CTAs: más juntos */
+  .hero-ctas { margin-top: 1.2rem; gap: 0.55rem; }
+  .btn { padding: 0.6rem 1.4rem; font-size: 0.8rem; }
+
+  /* ── RESTO ── */
+  .hero-clubs { display: none; }
+  .stats-grid { grid-template-columns: 1fr 1fr; }
+  .skills-grid { grid-template-columns: 1fr; }
+  .gallery-grid { grid-template-columns: 1fr 1fr; }
+  .form-row2 { grid-template-columns: 1fr; }
+  .celebrate-ring.r2, .celebrate-ring.r3 { display: none; }
+  .video-slot { flex: 0 0 50%; }
+  .footer-links { display: none; }
+}
+
+@media (max-width: 480px) {
+  .tl-row { grid-template-columns: 1fr; gap: 0.3rem; }
+  .tl-years { color: var(--accent); font-size: 0.72rem; padding-top: 0; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a class="nav-brand" href="#top">LA<span class="nav-brand-accent">Z</span>O</a>
+  <ul class="nav-links">
+    <li><a href="#sobre">Sobre mí</a></li>
+    <li><a href="#galeria">Fotos</a></li>
+    <li><a href="#videos">Vídeos</a></li>
+    <li><a href="#trayectoria">Carrera</a></li>
+    <li><a href="#contacto">Contacto</a></li>
+  </ul>
+  <button class="nav-hamburger" id="hamburgerBtn" aria-label="Abrir menú" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- Mobile overlay menu -->
+<div class="nav-overlay" id="navOverlay" role="dialog" aria-modal="true" aria-label="Menú de navegación">
+  <ul class="nav-overlay-links">
+    <li><a href="#sobre">Sobre mí</a></li>
+    <li><a href="#galeria">Fotos</a></li>
+    <li><a href="#videos">Vídeos</a></li>
+    <li><a href="#trayectoria">Carrera</a></li>
+    <li><a href="#contacto">Contacto</a></li>
+  </ul>
+  <div class="nav-overlay-brand">LA<span>Z</span>O</div>
+</div>
+
+<!-- HERO -->
+<div id="top">
+<section class="hero">
+  <div class="hero-bg">
+    <div class="hero-bg-gradient"></div>
+    <img class="hero-bg-img" src="hero-bg-slot.jpg" alt="Lazo en acción">
+  </div>
+
+  <div class="hero-ghost" aria-hidden="true">LAZO</div>
+
+  <!-- Split: left content | right celebration -->
+  <div class="hero-split">
+
+    <!-- LEFT -->
+    <div class="hero-content-side">
+      <h1 class="hero-lazo">LA<span class="lazo-z">Z</span>O</h1>
+      <span class="hero-lazo-underline" aria-hidden="true"></span>
+      <p class="hero-nombre">José Carlos Lazo Romero</p>
+
+      <!-- Próximo partido -->
+      <div class="hero-next-match">
+        <span class="hero-next-label">Próximo partido</span>
+        <div class="hero-next-row">
+          <div class="hero-next-team">
+            <!-- Sustituir src por escudo real: escudo-local.png -->
+            <img class="hero-next-crest" src="albacetepng.png" alt="Albacete Balompié">
+            <span class="hero-next-tname">Albacete</span>
+          </div>
+          <div class="hero-next-meta">
+            <span class="hero-next-jornada">J · 41 · 24 MAY</span>
+            <span class="hero-next-time">16:15</span>
+            <span class="hero-next-vs">Estadio Carlos Belmonte</span>
+          </div>
+          <div class="hero-next-team">
+            <img class="hero-next-crest" src="realsociedad.png" alt="Real Sociedad B">
+            <span class="hero-next-tname">Real Sociedad B</span>
+          </div>
+        </div>
+      </div>
+      <div class="hero-ctas">
+        <a href="#galeria" class="btn btn-solid">Ver fotos y vídeos</a>
+        <a href="#trayectoria" class="btn btn-ghost">Trayectoria</a>
+      </div>
+      <div class="hero-clubs">
+        <span class="hero-clubs-label">Pasado en</span>
+        <div class="hero-clubs-list">
+          <span>Real Madrid</span>
+          <span>UD Almería</span>
+          <span>RCD Espanyol</span>
+          <span>CD Lugo</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: transparent -->
+    <div class="hero-right-side" id="heroRightSide" style="background:transparent;"></div>
+
+  </div><!-- /hero-split -->
+
+  <!-- Recorte del jugador: PNG con fondo eliminado (remove.bg) -->
+  <!-- Cuando tengas el PNG guárdalo como hero-player.png en esta carpeta -->
+  <img class="hero-player-cutout" src="hero-player.png" aria-hidden="true"
+       onerror="this.style.display='none'">
+
+  <div class="hero-accent-strip"></div>
+</section>
+</div>
+
+<!-- SOBRE MÍ -->
+<section class="about" id="sobre">
+  <div class="about-grid">
+    <div>
+      <div class="section-header">
+        <p class="tag">Sobre mí</p>
+        <h2 class="sec-title">Velocidad,<br>técnica y<br>carácter.</h2>
+      </div>
+      <div class="about-body">
+        <p>Nací en <strong>Sanlúcar de Barrameda</strong> en 1996 y empecé a jugar con el Atlético Sanluqueño. Con diez años me vine al <strong>Real Madrid</strong>, y en Valdebebas pasé trece años aprendiendo lo que significa querer ser futbolista de verdad.</p>
+        <p>En 2015, <strong>Zinedine Zidane</strong> me llamó para la pretemporada del primer equipo. Ese momento me enseñó que si trabajas, los sueños están más cerca de lo que piensas.</p>
+        <p>Mi mejor temporada llegó en 2019-20 con el <strong>Almería</strong>: 10 goles y 3 asistencias. Dos años después, subimos a Primera como <strong>campeones de Segunda División</strong>. Un título que llevaré siempre conmigo.</p>
+        <p>Hoy estoy en el <strong>Albacete Balompié</strong> con las mismas ganas que el primer día. El fútbol es lo mío y no pienso parar.</p>
+      </div>
+    </div>
+    <div class="about-sidebar">
+      <div class="section-header about-spacer" style="visibility:hidden; margin-bottom:0;">
+        <p class="tag">_</p><h2 class="sec-title">_</h2>
+      </div>
+      <div class="data-row"><span class="data-key">Fecha de nacimiento</span><span class="data-val">16 · 02 · 1996</span></div>
+      <div class="data-row"><span class="data-key">Lugar</span><span class="data-val">Sanlúcar de Barrameda</span></div>
+      <div class="data-row"><span class="data-key">Posición</span><span class="data-val">Extremo izquierdo</span></div>
+      <div class="data-row"><span class="data-key">Pie</span><span class="data-val">Zurdo / ambidiestro</span></div>
+      <div class="data-row"><span class="data-key">Altura</span><span class="data-val">1,80 m</span></div>
+      <div class="data-row"><span class="data-key">Club actual</span><span class="data-val">Albacete Balompié</span></div>
+      <div class="data-row"><span class="data-key">Dorsal</span><span class="data-val" style="color:var(--accent)"># 16</span></div>
+      <div class="data-row"><span class="data-key">Formación</span><span class="data-val">Real Madrid (La Fábrica)</span></div>
+      <div class="data-row"><span class="data-key">Título</span><span class="data-val" style="color:var(--accent)">★ Campeón 2ª 2022</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- PHOTO BLOCK -->
+<div class="photo-hero" id="fotos-top">
+  <div class="photo-hero-inner">
+    <div class="photo-main">
+      <div class="photo-accent-bar"></div>
+      <img src="photo-main.jpg" alt="Lazo en acción" style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;">
+    </div>
+    <div class="photo-side">
+      <div class="photo-side-top">
+        <img src="photo-side-top.jpg" alt="Lazo en acción" style="width:100%;height:100%;object-fit:cover;display:block;">
+      </div>
+      <div class="photo-side-bottom">
+        <img src="photo-side-bottom.jpg" alt="Lazo en acción" style="width:100%;height:100%;object-fit:cover;display:block;">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ESTADÍSTICAS -->
+<section class="stats-section" id="stats">
+  <div class="section-header">
+    <p class="tag">Números</p>
+    <h2 class="sec-title">Carrera en cifras</h2>
+    <p class="sec-sub">Estadísticas acumuladas en competición oficial sénior.</p>
+  </div>
+  <div class="stats-grid">
+    <div class="stat-box">
+      <div class="stat-num" data-target="230">0</div>
+      <div class="stat-label">Partidos</div>
+      <div class="stat-note">oficiales como sénior</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num" data-target="33">0</div>
+      <div class="stat-label">Goles</div>
+      <div class="stat-note">liga y copa</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num" data-target="21">0</div>
+      <div class="stat-label">Asistencias</div>
+      <div class="stat-note">pases de gol</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num" style="color:var(--accent)">★ 1</div>
+      <div class="stat-label">Título</div>
+      <div class="stat-note">Campeón 2ª División 2022</div>
+    </div>
+  </div>
+</section>
+
+<!-- ESTILO DE JUEGO -->
+<section class="skills" id="estilo">
+  <div class="section-header">
+    <p class="tag">En el campo</p>
+    <h2 class="sec-title">Cómo juego</h2>
+    <p class="sec-sub">Mis puntos fuertes como extremo izquierdo en el fútbol español.</p>
+  </div>
+  <div class="skills-grid">
+    <div class="skill-item">
+      <div class="skill-num">01</div>
+      <div class="skill-title"><span>Velocidad</span> en conducción</div>
+      <p class="skill-body">Llevo el balón pegado al pie a alta velocidad. Mi primera aceleración saca de posición a los defensas y abre espacios para el equipo.</p>
+    </div>
+    <div class="skill-item">
+      <div class="skill-num">02</div>
+      <div class="skill-title"><span>Disparo</span> potente</div>
+      <p class="skill-body">Me perfilo desde la izquierda para disparar con la derecha al palo largo. Varios goles desde fuera del área avalan esta cualidad.</p>
+    </div>
+    <div class="skill-item">
+      <div class="skill-num">03</div>
+      <div class="skill-title"><span>Regate</span> y desborde</div>
+      <p class="skill-body">Técnica de fútbol sala aplicada al exterior, con cambios de ritmo y dirección que funcionan en espacios reducidos y en velocidad.</p>
+    </div>
+    <div class="skill-item">
+      <div class="skill-num">04</div>
+      <div class="skill-title"><span>Último</span> pase</div>
+      <p class="skill-body">Cuando el compañero está mejor, doy el pase. 21 asistencias en carrera demuestran que no solo busco el gol: busco lo mejor para el equipo.</p>
+    </div>
+    <div class="skill-item">
+      <div class="skill-num">05</div>
+      <div class="skill-title"><span>Ambidiestro</span> funcional</div>
+      <p class="skill-body">Zurdo natural para regatear, derecho para finalizar. Esa dualidad me da imprevisibilidad y hace más difícil anticipar mis movimientos.</p>
+    </div>
+    <div class="skill-item">
+      <div class="skill-num">06</div>
+      <div class="skill-title"><span>Disciplina</span> y carácter</div>
+      <p class="skill-body">Más de 230 partidos sin tarjeta roja. Me cuido, compito limpio y dejo todo en el campo. La experiencia de La Fábrica se nota en eso.</p>
+    </div>
+  </div>
+</section>
+
+<!-- GALERÍA -->
+<section class="gallery" id="galeria">
+  <div class="section-header">
+    <p class="tag">Galería</p>
+    <h2 class="sec-title">Fotos</h2>
+  </div>
+  <div class="gallery-grid">
+    <div class="gallery-cell">
+      <img src="gallery-cell1.jpeg" alt="Lazo en acción">
+      <div class="gallery-overlay"></div>
+    </div>
+    <div class="gallery-cell">
+      <img src="gallery-cell2.avif" alt="Lazo en acción" style="object-position: center top;">
+      <div class="gallery-overlay"></div>
+    </div>
+    <div class="gallery-cell">
+      <img src="gallery-cell3.webp" alt="Lazo en acción" style="object-position: left center;">
+      <div class="gallery-overlay"></div>
+    </div>
+    <div class="gallery-cell">
+      <img src="gallery-cell4.jpg" alt="Lazo en acción">
+      <div class="gallery-overlay"></div>
+    </div>
+    <div class="gallery-cell">
+      <img src="gallery-cell5.jpg" alt="Lazo en acción">
+      <div class="gallery-overlay"></div>
+    </div>
+    <div class="gallery-cell">
+      <img src="gallery-cell6.jpg" alt="Lazo en acción">
+      <div class="gallery-overlay"></div>
+    </div>
+  </div>
+</section>
+
+<!-- VÍDEOS (TikTok 9:16 · scroll horizontal) -->
+<section class="video-section" id="videos">
+  <div class="section-header">
+    <p class="tag">Highlights</p>
+    <h2 class="sec-title">Goles</h2>
+    <p class="sec-sub">Un gol por vídeo. Arrastra para ver todos.</p>
+  </div>
+  <div class="video-scroll-wrap">
+    <div class="video-grid" id="videoGrid">
+
+      <div class="video-slot">
+        <video class="video-player" src="goal-1.mp4" muted playsinline preload="metadata"></video>
+        <div class="video-ui-overlay">
+          <div class="video-ui-top">
+            <span class="video-goal-num">01</span>
+            <div class="video-tiktok-badge">TikTok</div>
+          </div>
+          <div class="video-ui-bottom">
+            <span class="video-slot-lbl">Derechazo</span>
+            <span class="video-slot-meta">Almería · 2019-20 · :23</span>
+          </div>
+        </div>
+        <div class="video-slot-play" aria-label="Reproducir">
+          <svg class="video-play-icon" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          <svg class="video-pause-icon" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+        </div>
+      </div>
+
+      <div class="video-slot">
+        <video class="video-player" src="goal-2.mp4" muted playsinline preload="metadata"></video>
+        <div class="video-ui-overlay">
+          <div class="video-ui-top">
+            <span class="video-goal-num">02</span>
+            <div class="video-tiktok-badge">TikTok</div>
+          </div>
+          <div class="video-ui-bottom">
+            <span class="video-slot-lbl">Gol con la zurda</span>
+            <span class="video-slot-meta">Albacete · 2025-26 · :18</span>
+          </div>
+        </div>
+        <div class="video-slot-play" aria-label="Reproducir">
+          <svg class="video-play-icon" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          <svg class="video-pause-icon" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+        </div>
+      </div>
+
+      <div class="video-slot">
+        <video class="video-player" src="goal-3.mp4" muted playsinline preload="metadata"></video>
+        <div class="video-ui-overlay">
+          <div class="video-ui-top">
+            <span class="video-goal-num">03</span>
+            <div class="video-tiktok-badge">TikTok</div>
+          </div>
+          <div class="video-ui-bottom">
+            <span class="video-slot-lbl">Gol por la escuadra</span>
+            <span class="video-slot-meta">Almería · 2020-21 · :21</span>
+          </div>
+        </div>
+        <div class="video-slot-play" aria-label="Reproducir">
+          <svg class="video-play-icon" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          <svg class="video-pause-icon" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+        </div>
+      </div>
+
+      <div class="video-slot">
+        <video class="video-player" src="goal-4.mp4" muted playsinline preload="metadata"></video>
+        <div class="video-ui-overlay">
+          <div class="video-ui-top">
+            <span class="video-goal-num">04</span>
+            <div class="video-tiktok-badge">TikTok</div>
+          </div>
+          <div class="video-ui-bottom">
+            <span class="video-slot-lbl">Gol con túnel</span>
+            <span class="video-slot-meta">Almería · 2021-22 · :30</span>
+          </div>
+        </div>
+        <div class="video-slot-play" aria-label="Reproducir">
+          <svg class="video-play-icon" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          <svg class="video-pause-icon" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+        </div>
+      </div>
+
+      <div class="video-slot">
+        <video class="video-player" src="goal-5.mp4" muted playsinline preload="metadata"></video>
+        <div class="video-ui-overlay">
+          <div class="video-ui-top">
+            <span class="video-goal-num">05</span>
+            <div class="video-tiktok-badge">TikTok</div>
+          </div>
+          <div class="video-ui-bottom">
+            <span class="video-slot-lbl">Mano a mano</span>
+            <span class="video-slot-meta">Albacete · 2025-26 · :19</span>
+          </div>
+        </div>
+        <div class="video-slot-play" aria-label="Reproducir">
+          <svg class="video-play-icon" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          <svg class="video-pause-icon" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+        </div>
+      </div>
+
+      <div class="video-slot">
+        <video class="video-player" src="goal-6.mp4" muted playsinline preload="metadata"></video>
+        <div class="video-ui-overlay">
+          <div class="video-ui-top">
+            <span class="video-goal-num">06</span>
+            <div class="video-tiktok-badge">TikTok</div>
+          </div>
+          <div class="video-ui-bottom">
+            <span class="video-slot-lbl">Jugada combinativa</span>
+            <span class="video-slot-meta">Almería · 2021-22 · :25</span>
+          </div>
+        </div>
+        <div class="video-slot-play" aria-label="Reproducir">
+          <svg class="video-play-icon" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          <svg class="video-pause-icon" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+        </div>
+      </div>
+
+    </div>
+    <p class="video-scroll-hint">Desliza para ver más</p>
+  </div>
+</section>
+
+<!-- TRAYECTORIA -->
+<section class="trayectoria" id="trayectoria">
+  <div class="section-header">
+    <p class="tag">Historia</p>
+    <h2 class="sec-title">Trayectoria</h2>
+  </div>
+  <div class="tl-table">
+    <div class="tl-row">
+      <span class="tl-years">2002–2015</span>
+      <div>
+        <div class="tl-club">Real Madrid · La Fábrica</div>
+        <div class="tl-cat">Academia infantil → Juvenil A · División de Honor</div>
+        <p class="tl-highlight">Trece años en Valdebebas. <strong>Convocado por Zidane</strong> al primer equipo en pretemporada 2015. UEFA Youth League con el Juvenil A.</p>
+      </div>
+      <span class="tl-badge badge-gray">Cantera</span>
+    </div>
+    <div class="tl-row">
+      <span class="tl-years">2015–2018</span>
+      <div>
+        <div class="tl-club">Castilla · Villarreal B · Recreativo</div>
+        <div class="tl-cat">Segunda División B</div>
+        <p class="tl-highlight">Debut sénior en el Castilla. Cedido al Villarreal B y al Recreativo, donde <strong>marca 6 goles</strong> y llama la atención de Segunda División.</p>
+      </div>
+      <span class="tl-badge badge-gray">2ª B</span>
+    </div>
+    <div class="tl-row">
+      <span class="tl-years">2018–2019</span>
+      <div>
+        <div class="tl-club">CD Lugo</div>
+        <div class="tl-cat">Segunda División de España</div>
+        <p class="tl-highlight">Salto definitivo al fútbol profesional. <strong>9 goles y 2 asistencias</strong> en 37 partidos. Uno de los extremos más desequilibrantes de la categoría ese año.</p>
+      </div>
+      <span class="tl-badge badge-gray">2ª</span>
+    </div>
+    <div class="tl-row">
+      <span class="tl-years">2019–2022</span>
+      <div>
+        <div class="tl-club">UD Almería</div>
+        <div class="tl-cat">Segunda División → Primera División</div>
+        <p class="tl-highlight">Sus mejores años. <strong>10 goles en 2019-20</strong>, 8 en 2020-21 y el éxito máximo: <strong>Campeón de Segunda 2021-22</strong> con ascenso a Primera. 113 partidos y 19 goles con el club.</p>
+      </div>
+      <span class="tl-badge badge-red">★ Campeón</span>
+    </div>
+    <div class="tl-row">
+      <span class="tl-years">2022–2024</span>
+      <div>
+        <div class="tl-club">RCD Espanyol</div>
+        <div class="tl-cat">Primera y Segunda División</div>
+        <p class="tl-highlight">Dos temporadas en el club perico. <strong>Ascenso a Primera en 2023-24</strong> via playoff.</p>
+      </div>
+      <span class="tl-badge badge-gray">1ª / 2ª</span>
+    </div>
+    <div class="tl-row">
+      <span class="tl-years">2024 →</span>
+      <div>
+        <div class="tl-club">Albacete Balompié</div>
+        <div class="tl-cat">Segunda División · Actual</div>
+        <p class="tl-highlight">Nuevo reto en el Alba. <strong>Gol en debut</strong> (agosto 2024). Aportando creatividad, velocidad y experiencia al equipo manchego.</p>
+      </div>
+      <span class="tl-badge badge-red">Actual</span>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACTO -->
+<section class="contacto" id="contacto">
+  <div class="contacto-grid">
+    <div>
+      <div class="section-header">
+        <p class="tag">Contacto</p>
+        <h2 class="sec-title">Hablemos.</h2>
+      </div>
+      <p class="contacto-intro">
+        Para consultas de representación, colaboraciones, entrevistas o apariciones en medios de comunicación. Respondo a todo.
+      </p>
+      <div class="contacto-detail">
+        <a href="#">Instagram</a>
+        <a href="#">X / Twitter</a>
+        <span>Albacete Balompié · Segunda División</span>
+      </div>
+    </div>
+    <form onsubmit="handleForm(event)">
+      <div class="form-row2">
+        <div class="form-field">
+          <label for="nom">Nombre</label>
+          <input type="text" id="nom" placeholder="Tu nombre" required>
+        </div>
+        <div class="form-field">
+          <label for="em">Email</label>
+          <input type="email" id="em" placeholder="tu@email.com" required>
+        </div>
+      </div>
+      <div class="form-field">
+        <label for="msg">Mensaje</label>
+        <textarea id="msg" placeholder="En qué puedo ayudarte..." required></textarea>
+      </div>
+      <button type="submit" class="btn btn-solid" style="width:100%;">Enviar mensaje</button>
+    </form>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-brand">LA<span style="color:var(--accent)">Z</span>O</span>
+  <span class="footer-copy">© 2025 · Todos los derechos reservados</span>
+  <div class="footer-links">
+    <a href="#sobre">Sobre mí</a>
+    <a href="#galeria">Fotos</a>
+    <a href="#videos">Vídeos</a>
+    <a href="#contacto">Contacto</a>
+  </div>
+</footer>
+
+<script>
+// ── Nav scroll ──
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  navbar.classList.toggle('scrolled', window.scrollY > 60);
+}, { passive: true });
+
+// ── Hamburger menu ──
+const hamburgerBtn = document.getElementById('hamburgerBtn');
+const navOverlay   = document.getElementById('navOverlay');
+
+function openMenu() {
+  hamburgerBtn.classList.add('open');
+  navOverlay.classList.add('open');
+  hamburgerBtn.setAttribute('aria-expanded', 'true');
+  document.body.style.overflow = 'hidden';
+}
+function closeMenu() {
+  hamburgerBtn.classList.remove('open');
+  navOverlay.classList.remove('open');
+  hamburgerBtn.setAttribute('aria-expanded', 'false');
+  document.body.style.overflow = '';
+}
+
+hamburgerBtn.addEventListener('click', () => {
+  navOverlay.classList.contains('open') ? closeMenu() : openMenu();
+});
+
+// Close on overlay link click
+navOverlay.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+
+// Close on ESC
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu(); });
+
+// ── Parallax scroll (right panel) ──
+const parallaxEl  = document.getElementById('heroParallax');
+const heroSection = document.querySelector('.hero');
+let   ticking     = false;
+
+function updateParallax() {
+  const scrollY     = window.scrollY;
+  const heroHeight  = heroSection ? heroSection.offsetHeight : window.innerHeight;
+  // Only animate while hero is in view; factor 0.28 = image moves at 72% scroll speed
+  if (scrollY <= heroHeight) {
+    parallaxEl.style.transform = 'translateY(' + (scrollY * 0.28) + 'px)';
+  }
+  ticking = false;
+}
+
+window.addEventListener('scroll', () => {
+  if (!ticking) {
+    requestAnimationFrame(updateParallax);
+    ticking = true;
+  }
+}, { passive: true });
+
+// ── Counters ──
+const nums = document.querySelectorAll('[data-target]');
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    const el = e.target, target = +el.dataset.target;
+    let cur = 0;
+    const step = target / (1600 / 16);
+    const t = setInterval(() => {
+      cur = Math.min(cur + step, target);
+      el.textContent = Math.floor(cur) + (target >= 100 ? '+' : '');
+      if (cur >= target) clearInterval(t);
+    }, 16);
+    io.unobserve(el);
+  });
+}, { threshold: 0.5 });
+nums.forEach(n => io.observe(n));
+
+// ── Timeline reveal ──
+const rows = document.querySelectorAll('.tl-row');
+const tlio = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    setTimeout(() => e.target.classList.add('visible'), 60 * Array.from(rows).indexOf(e.target));
+    tlio.unobserve(e.target);
+  });
+}, { threshold: 0.15 });
+rows.forEach(r => tlio.observe(r));
+
+// ── Video grid drag-to-scroll ──
+const videoGrid = document.getElementById('videoGrid');
+if (videoGrid) {
+  let isDown = false, startX, scrollLeft, didDrag = false;
+  videoGrid.addEventListener('mousedown', e => {
+    isDown = true; didDrag = false;
+    videoGrid.classList.add('dragging');
+    startX = e.pageX - videoGrid.offsetLeft;
+    scrollLeft = videoGrid.scrollLeft;
+  });
+  videoGrid.addEventListener('mouseleave', () => { isDown = false; videoGrid.classList.remove('dragging'); });
+  videoGrid.addEventListener('mouseup',    () => { isDown = false; videoGrid.classList.remove('dragging'); });
+  videoGrid.addEventListener('mousemove', e => {
+    if (!isDown) return;
+    e.preventDefault();
+    const x = e.pageX - videoGrid.offsetLeft;
+    const walk = x - startX;
+    if (Math.abs(walk) > 4) didDrag = true;
+    videoGrid.scrollLeft = scrollLeft - walk * 1.4;
+  });
+
+  // ── Click-to-play ──
+  videoGrid.addEventListener('click', e => {
+    if (didDrag) return; // was a drag, not a click
+    const slot = e.target.closest('.video-slot');
+    if (!slot) return;
+    const video = slot.querySelector('.video-player');
+    if (!video) return;
+
+    if (video.paused) {
+      // pause all others first
+      videoGrid.querySelectorAll('.video-player').forEach(v => {
+        if (v !== video) { v.pause(); v.closest('.video-slot').classList.remove('playing'); }
+      });
+      video.play().catch(() => {});
+      slot.classList.add('playing');
+    } else {
+      video.pause();
+      slot.classList.remove('playing');
+    }
+  });
+
+  // remove playing class when video ends
+  videoGrid.querySelectorAll('.video-slot').forEach(slot => {
+    slot.querySelector('.video-player')?.addEventListener('ended', () => {
+      slot.classList.remove('playing');
+    });
+  });
+}
+
+// ── Form ──
+function handleForm(e) {
+  e.preventDefault();
+  const btn = e.target.querySelector('button');
+  btn.textContent = 'Mensaje enviado';
+  btn.style.background = '#3a9966';
+  btn.disabled = true;
+  setTimeout(() => {
+    btn.textContent = 'Enviar mensaje';
+    btn.style.background = '';
+    btn.disabled = false;
+    e.target.reset();
+  }, 3500);
+}
+</script>
+</body>
+</html>
