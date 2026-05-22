@@ -940,25 +940,18 @@ footer {
     min-height: unset;
   }
 
-  /* Gradiente lateral: oscurece izquierda para legibilidad */
-  .hero-bg-gradient {
-    background:
-      linear-gradient(to right, rgba(26,26,24,0.95) 0%, rgba(26,26,24,0.75) 52%, rgba(26,26,24,0.05) 100%),
-      linear-gradient(to top, rgba(26,26,24,0.85) 0%, transparent 28%);
-  }
-
-  /* Jugador: anclado al lado derecho, sin superposición con el texto */
+  /* Jugador: anclado al lado derecho, más grande */
   .hero-player-cutout {
     bottom: 0;
     top: auto;
     right: 0;
     transform: none;
-    width: 44%;
-    height: 94dvh;
-    opacity: 0.92;
+    width: 54%;
+    height: 96dvh;
+    opacity: 0.95;
     z-index: 8;
     object-position: bottom right;
-    filter: drop-shadow(-10px 0 30px rgba(0,0,0,0.75)) brightness(0.88);
+    filter: drop-shadow(-8px 0 20px rgba(0,0,0,0.5)) brightness(0.95);
   }
 
   /* Contenido: columna izquierda con padding para el nav */
