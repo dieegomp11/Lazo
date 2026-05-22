@@ -932,14 +932,14 @@ footer {
   /* Top section: espacio para que el jugador respire */
   .hero-right-side { min-height: 46dvh; }
 
-  /* Gradiente: claro arriba (jugador visible), oscuro abajo (texto legible) */
+  /* Gradiente: fondo oscurecido arriba para que el PNG del jugador sea el único protagonista */
   .hero-bg-gradient {
     background: linear-gradient(
       to bottom,
-      rgba(26,26,24,0.38) 0%,
-      rgba(26,26,24,0.0) 24%,
-      rgba(26,26,24,0.42) 50%,
-      rgba(26,26,24,0.97) 64%
+      rgba(26,26,24,0.72) 0%,
+      rgba(26,26,24,0.62) 44%,
+      rgba(26,26,24,0.97) 62%,
+      rgba(26,26,24,1.0) 76%
     );
   }
 
@@ -954,7 +954,7 @@ footer {
     opacity: 0.9;
     z-index: 8;
     object-position: top center;
-    filter: drop-shadow(-6px 6px 22px rgba(0,0,0,0.75)) brightness(0.9);
+    filter: drop-shadow(-6px 6px 28px rgba(0,0,0,0.85)) brightness(1.0);
   }
 
   /* Contenido: padding compacto */
