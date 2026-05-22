@@ -929,50 +929,71 @@ footer {
 
   /* ── HERO MOBILE ── */
 
-  /* Top section: espacio para que el jugador respire */
-  .hero-right-side { min-height: 46dvh; }
+  /* Restaurar split side-by-side: texto izquierda | jugador derecha */
+  .hero-split {
+    grid-template-columns: 58% 42%;
+    min-height: 100dvh;
+    align-items: stretch;
+  }
+  .hero-right-side {
+    order: 0;
+    min-height: unset;
+  }
 
-  /* Gradiente: fondo oscurecido arriba para que el PNG del jugador sea el único protagonista */
+  /* Gradiente lateral: oscurece izquierda para legibilidad */
   .hero-bg-gradient {
-    background: linear-gradient(
-      to bottom,
-      rgba(26,26,24,0.72) 0%,
-      rgba(26,26,24,0.62) 44%,
-      rgba(26,26,24,0.97) 62%,
-      rgba(26,26,24,1.0) 76%
-    );
+    background:
+      linear-gradient(to right, rgba(26,26,24,0.95) 0%, rgba(26,26,24,0.75) 52%, rgba(26,26,24,0.05) 100%),
+      linear-gradient(to top, rgba(26,26,24,0.85) 0%, transparent 28%);
   }
 
-  /* Jugador: reposicionado en la parte alta, opaco y centrado */
+  /* Jugador: anclado al lado derecho, sin superposición con el texto */
   .hero-player-cutout {
-    bottom: auto;
-    top: 2.2rem;
-    right: 50%;
-    transform: translateX(50%);
-    width: 74%;
-    height: 49dvh;
-    opacity: 0.9;
+    bottom: 0;
+    top: auto;
+    right: 0;
+    transform: none;
+    width: 44%;
+    height: 94dvh;
+    opacity: 0.92;
     z-index: 8;
-    object-position: top center;
-    filter: drop-shadow(-6px 6px 28px rgba(0,0,0,0.85)) brightness(1.0);
+    object-position: bottom right;
+    filter: drop-shadow(-10px 0 30px rgba(0,0,0,0.75)) brightness(0.88);
   }
 
-  /* Contenido: padding compacto */
-  .hero-content-side { padding: 1.1rem 5vw 2.8rem; }
+  /* Contenido: columna izquierda con padding para el nav */
+  .hero-content-side {
+    padding: 5.5rem 0.5rem 2.5rem 4vw;
+    justify-content: center;
+  }
 
-  /* Título: más grande en móvil (18vw del breakpoint 900px queda corto en 360-580px) */
-  .hero-lazo { font-size: clamp(4.5rem, 23vw, 7rem); }
+  /* Título: adaptado a columna estrecha */
+  .hero-lazo { font-size: clamp(3rem, 14vw, 5rem); }
 
-  /* Nombre: más visible en móvil */
-  .hero-nombre { font-size: 0.95rem; letter-spacing: 0.15em; margin-top: 0.7rem; }
+  /* Nombre: compacto */
+  .hero-nombre { font-size: 0.82rem; letter-spacing: 0.12em; margin-top: 0.6rem; }
 
-  /* Próximo partido: compacto */
-  .hero-next-match { max-width: 100%; margin-top: 1.1rem; padding-top: 0.9rem; }
-  .hero-next-time { font-size: 1.25rem; }
+  /* Ocultar elementos que no caben en columna estrecha */
+  .hero-sep { display: none; }
+  .hero-stats { display: none; }
 
-  /* CTAs: más juntos */
-  .hero-ctas { margin-top: 1.2rem; gap: 0.55rem; }
-  .btn { padding: 0.6rem 1.4rem; font-size: 0.8rem; }
+  /* Próximo partido: versión compacta para columna estrecha */
+  .hero-next-match {
+    max-width: 100%;
+    margin-top: 1rem;
+    padding-top: 0.75rem;
+  }
+  .hero-next-label { margin-bottom: 0.55rem; }
+  .hero-next-row { gap: 0.55rem; }
+  .hero-next-crest { width: 30px; height: 30px; }
+  .hero-next-tname { display: none; }
+  .hero-next-time { font-size: 1.1rem; }
+  .hero-next-jornada { font-size: 0.5rem; }
+  .hero-next-vs { font-size: 0.46rem; }
+
+  /* CTAs: apilados verticalmente */
+  .hero-ctas { margin-top: 1.4rem; gap: 0.5rem; flex-direction: column; align-items: flex-start; }
+  .btn { padding: 0.55rem 1.2rem; font-size: 0.78rem; }
 
   /* ── RESTO ── */
   .hero-clubs { display: none; }
